@@ -9,6 +9,8 @@ import java.util.List;
 
 public interface TopicosRepository extends JpaRepository<Topico,Long> {
 
+    //Topico findByCurso_Nome(String nomeCurso);
+
     List<Topico> findByCurso_Nome(String nomeCurso);
 
     @Query("SELECT t from Topico t where t.curso.nome =:nomeCurso")
