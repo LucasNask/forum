@@ -4,8 +4,12 @@ import com.ibsoftware.forum.business.TopicosService;
 import com.ibsoftware.forum.controller.form.TopicoForm;
 import com.ibsoftware.forum.dto.TopicoDto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
+import javax.validation.Valid;
+import java.net.URI;
 import java.util.Arrays;
 import java.util.List;
 
@@ -26,7 +30,15 @@ public class TopicosController {
     }
 
     @PostMapping
-    public void cadastrar(@RequestBody TopicoForm topicoForm){
-        topicosService.saveTopico(topicoForm);
+    public ResponseEntity<TopicoDto> cadastrar(@RequestBody @Valid TopicoForm topicoForm, UriComponentsBuilder uriComponentsBuilder){
+        TopicoDto topicoDto = topicosService.saveTopico(topicoForm);
+
+        URI uri = uriComponentsBuilder.path("/topicos").build().toUri();
+        return ResponseEntity.created(uri).body(topicoDto);
+    }
+
+    @GetMapping("/{id}")
+    public TopicoDto detalhar(@PathVariable Long id){
+        return topicosService.retrieveById(id);
     }
 }
