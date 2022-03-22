@@ -1,6 +1,7 @@
 package com.ibsoftware.forum.business;
 
 import com.ibsoftware.forum.controller.form.TopicoForm;
+import com.ibsoftware.forum.dto.DetalheDoTopicoDto;
 import com.ibsoftware.forum.dto.TopicoDto;
 import com.ibsoftware.forum.mapper.TopicoMapper;
 import com.ibsoftware.forum.modelo.Curso;
@@ -40,6 +41,10 @@ public class TopicosService {
 
     public TopicoDto retrieveById(Long id){
         return TopicoMapper.INSTANCE.entityToDTO(topicosRepository.getById(id));
+    }
+
+    public DetalheDoTopicoDto detalharTopico(Long id){
+        return TopicoMapper.INSTANCE.mapDetalheByTopico(topicosRepository.getById(id));
     }
 
 }

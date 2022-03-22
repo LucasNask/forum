@@ -2,6 +2,7 @@ package com.ibsoftware.forum.controller;
 
 import com.ibsoftware.forum.business.TopicosService;
 import com.ibsoftware.forum.controller.form.TopicoForm;
+import com.ibsoftware.forum.dto.DetalheDoTopicoDto;
 import com.ibsoftware.forum.dto.TopicoDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -38,7 +39,7 @@ public class TopicosController {
     }
 
     @GetMapping("/{id}")
-    public TopicoDto detalhar(@PathVariable Long id){
-        return topicosService.retrieveById(id);
+    public DetalheDoTopicoDto detalhar(@PathVariable Long id){
+        return topicosService.detalharTopico(id);
     }
 }

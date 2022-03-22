@@ -29,7 +29,7 @@ public class TopicoDto {
 
     private LocalDateTime dataCriacao;
 
-    public static List<DetalheDoTopicoDto> converter(List<Topico> topicos) {
+    /*public static List<DetalheDoTopicoDto> converter(List<Topico> topicos) {
         return topicos.stream().map(TopicoDto::new).collect(Collectors.toList());
-    }
+    }*/
 }
