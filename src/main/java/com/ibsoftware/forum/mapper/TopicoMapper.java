@@ -1,10 +1,10 @@
 package com.ibsoftware.forum.mapper;
 
-import com.ibsoftware.forum.controller.form.TopicoForm;
+import com.ibsoftware.forum.form.AtualizacaoTopicoForm;
+import com.ibsoftware.forum.form.TopicoForm;
 import com.ibsoftware.forum.dto.DetalheDoTopicoDto;
 import com.ibsoftware.forum.dto.TopicoDto;
 import com.ibsoftware.forum.modelo.Curso;
-import com.ibsoftware.forum.modelo.Resposta;
 import com.ibsoftware.forum.modelo.Topico;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -49,6 +49,11 @@ public abstract class TopicoMapper {
         return detalheDoTopicoDto;
     };
 
+    public Topico attFormToEntity(AtualizacaoTopicoForm source, Topico target){
+        target.setMensagem(source.getMensagem());
+        target.setTitulo(source.getTitulo());
 
+        return target;
+    }
 
 }

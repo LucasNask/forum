@@ -1,7 +1,8 @@
 package com.ibsoftware.forum.controller;
 
 import com.ibsoftware.forum.business.TopicosService;
-import com.ibsoftware.forum.controller.form.TopicoForm;
+import com.ibsoftware.forum.form.AtualizacaoTopicoForm;
+import com.ibsoftware.forum.form.TopicoForm;
 import com.ibsoftware.forum.dto.DetalheDoTopicoDto;
 import com.ibsoftware.forum.dto.TopicoDto;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +12,6 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.validation.Valid;
 import java.net.URI;
-import java.util.Arrays;
 import java.util.List;
 
 @RestController
@@ -41,5 +41,11 @@ public class TopicosController {
     @GetMapping("/{id}")
     public DetalheDoTopicoDto detalhar(@PathVariable Long id){
         return topicosService.detalharTopico(id);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<TopicoDto> atualizar(@PathVariable Long id, @RequestBody @Valid AtualizacaoTopicoForm form){
+
+        return ResponseEntity.ok(topicosService.atualizarTopico(id,form));
     }
 }

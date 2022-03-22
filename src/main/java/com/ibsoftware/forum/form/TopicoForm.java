@@ -1,4 +1,4 @@
-package com.ibsoftware.forum.controller.form;
+package com.ibsoftware.forum.form;
 
 import lombok.Getter;
 import lombok.Setter;

@@ -1,6 +1,7 @@
 package com.ibsoftware.forum.business;
 
-import com.ibsoftware.forum.controller.form.TopicoForm;
+import com.ibsoftware.forum.form.AtualizacaoTopicoForm;
+import com.ibsoftware.forum.form.TopicoForm;
 import com.ibsoftware.forum.dto.DetalheDoTopicoDto;
 import com.ibsoftware.forum.dto.TopicoDto;
 import com.ibsoftware.forum.mapper.TopicoMapper;
@@ -45,6 +46,14 @@ public class TopicosService {
 
     public DetalheDoTopicoDto detalharTopico(Long id){
         return TopicoMapper.INSTANCE.mapDetalheByTopico(topicosRepository.getById(id));
+    }
+
+    public TopicoDto atualizarTopico(Long id, AtualizacaoTopicoForm formAtt){
+        Topico topico = topicosRepository.getById(id);
+
+        TopicoMapper.INSTANCE.attFormToEntity(formAtt,topico);
+
+        return TopicoMapper.INSTANCE.entityToDTO(topico);
     }
 
 }
