@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
@@ -31,6 +32,7 @@ public class TopicosController {
     }
 
     @PostMapping
+    @Transactional
     public ResponseEntity<TopicoDto> cadastrar(@RequestBody @Valid TopicoForm topicoForm, UriComponentsBuilder uriComponentsBuilder){
         TopicoDto topicoDto = topicosService.saveTopico(topicoForm);
 
@@ -39,13 +41,39 @@ public class TopicosController {
     }
 
     @GetMapping("/{id}")
-    public DetalheDoTopicoDto detalhar(@PathVariable Long id){
-        return topicosService.detalharTopico(id);
+    public ResponseEntity<DetalheDoTopicoDto> detalhar(@PathVariable Long id){
+
+        DetalheDoTopicoDto detalheDoTopicoDto = topicosService.detalharTopico(id);
+
+        if(detalheDoTopicoDto != null){
+            return ResponseEntity.ok(detalheDoTopicoDto);
+        }
+        return ResponseEntity.notFound().build();
     }
 
     @PutMapping("/{id}")
+    @Transactional
     public ResponseEntity<TopicoDto> atualizar(@PathVariable Long id, @RequestBody @Valid AtualizacaoTopicoForm form){
 
-        return ResponseEntity.ok(topicosService.atualizarTopico(id,form));
+        TopicoDto topicoDto = topicosService.atualizarTopico(id,form);
+
+        if(topicoDto != null){
+            return ResponseEntity.ok(topicoDto);
+        }
+        return ResponseEntity.notFound().build();
     }
+
+    @DeleteMapping("/{id}")
+    @Transactional
+    public ResponseEntity<?> remover(@PathVariable Long id){
+
+        Boolean flagDeletou = topicosService.deleteById(id);
+
+        if(flagDeletou){
+            return ResponseEntity.ok().build();
+        }
+        return  ResponseEntity.notFound().build();
+    }
+
+
 }

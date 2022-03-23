@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class TopicosService {
@@ -45,15 +46,39 @@ public class TopicosService {
     }
 
     public DetalheDoTopicoDto detalharTopico(Long id){
-        return TopicoMapper.INSTANCE.mapDetalheByTopico(topicosRepository.getById(id));
+        Optional<Topico> topico = topicosRepository.findById(id);
+
+        return topico.map(value -> TopicoMapper.INSTANCE.mapDetalheByTopico(value)).orElse(null);
+
     }
 
     public TopicoDto atualizarTopico(Long id, AtualizacaoTopicoForm formAtt){
-        Topico topico = topicosRepository.getById(id);
+        Optional<Topico> topico = topicosRepository.findById(id);
 
-        TopicoMapper.INSTANCE.attFormToEntity(formAtt,topico);
+        //System.out.println(topico.getMensagem());
 
-        return TopicoMapper.INSTANCE.entityToDTO(topico);
+        /*topico.setMensagem(formAtt.getMensagem());
+        topico.setTitulo(formAtt.getTitulo());*/
+
+        //System.out.println(topico.getMensagem());
+
+        if(topico.isPresent()){
+            TopicoMapper.INSTANCE.attFormToEntity(formAtt,topico.get());
+            return TopicoMapper.INSTANCE.entityToDTO(topico.get());
+        }
+        return null;
+    }
+
+    public Boolean deleteById(Long id){
+        Optional<Topico> topico = topicosRepository.findById(id);
+
+        if (topico.isPresent()){
+            topicosRepository.deleteById(id);
+            return true;
+        }
+
+        return false;
+
     }
 
 }
