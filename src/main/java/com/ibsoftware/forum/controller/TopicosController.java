@@ -6,6 +6,7 @@ import com.ibsoftware.forum.form.TopicoForm;
 import com.ibsoftware.forum.dto.DetalheDoTopicoDto;
 import com.ibsoftware.forum.dto.TopicoDto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -23,12 +24,15 @@ public class TopicosController {
     private TopicosService topicosService;
 
     @GetMapping
-    public List<TopicoDto> lista(String nomeCurso){
+    public Page<TopicoDto> lista(@RequestParam(required = false) String nomeCurso,
+                                 @RequestParam int pagina, @RequestParam int qtd){
+
         if(nomeCurso == null){
-            return topicosService.listTopicos();
+            return topicosService.listTopicos(pagina,qtd);
         }else{
-            return topicosService.listTopicosByCurso(nomeCurso);
+            return topicosService.listTopicosByCurso(nomeCurso,pagina,qtd);
         }
+
     }
 
     @PostMapping

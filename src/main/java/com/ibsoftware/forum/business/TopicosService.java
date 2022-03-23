@@ -10,6 +10,9 @@ import com.ibsoftware.forum.modelo.Topico;
 import com.ibsoftware.forum.repository.CursoRepository;
 import com.ibsoftware.forum.repository.TopicosRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,12 +27,22 @@ public class TopicosService {
     @Autowired
     private CursoRepository cursoRepository;
 
-    public List<TopicoDto> listTopicos(){
-        return TopicoMapper.INSTANCE.listEntityToListDTO(topicosRepository.findAll());
+    public Page<TopicoDto> listTopicos(int pagina, int qtd){
+
+        Pageable paginacao = PageRequest.of(pagina,qtd);
+
+        Page<Topico> topicos = topicosRepository.findAll(paginacao);
+
+        return TopicoMapper.INSTANCE.pageEntityToPageDTO(topicos);
     }
 
-    public List<TopicoDto> listTopicosByCurso(String nomeCurso){
-        return TopicoMapper.INSTANCE.listEntityToListDTO(topicosRepository.findByCurso_Nome(nomeCurso));
+    public Page<TopicoDto> listTopicosByCurso(String nomeCurso,int pagina, int qtd){
+
+        Pageable paginacao = PageRequest.of(pagina,qtd);
+
+        Page<Topico> topicos = topicosRepository.findByCurso_Nome(nomeCurso,paginacao);
+
+        return TopicoMapper.INSTANCE.pageEntityToPageDTO(topicos);
     }
 
     public TopicoDto saveTopico(TopicoForm topicoForm){
