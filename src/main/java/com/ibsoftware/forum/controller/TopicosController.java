@@ -6,6 +6,8 @@ import com.ibsoftware.forum.form.TopicoForm;
 import com.ibsoftware.forum.dto.DetalheDoTopicoDto;
 import com.ibsoftware.forum.dto.TopicoDto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -27,6 +29,7 @@ public class TopicosController {
     private TopicosService topicosService;
 
     @GetMapping
+    @Cacheable(value = "listaDeTopicos")
     public Page<TopicoDto> lista(@RequestParam(required = false) String nomeCurso,@PageableDefault(sort = "id", direction = Sort.Direction.ASC, page = 0,size = 10) Pageable paginacao){
 
         if(nomeCurso == null){
@@ -39,6 +42,7 @@ public class TopicosController {
 
     @PostMapping
     @Transactional
+    @CacheEvict(value = "listaDeTopicos", allEntries = true)
     public ResponseEntity<TopicoDto> cadastrar(@RequestBody @Valid TopicoForm topicoForm, UriComponentsBuilder uriComponentsBuilder){
         TopicoDto topicoDto = topicosService.saveTopico(topicoForm);
 
@@ -59,6 +63,7 @@ public class TopicosController {
 
     @PutMapping("/{id}")
     @Transactional
+    @CacheEvict(value = "listaDeTopicos", allEntries = true)
     public ResponseEntity<TopicoDto> atualizar(@PathVariable Long id, @RequestBody @Valid AtualizacaoTopicoForm form){
 
         TopicoDto topicoDto = topicosService.atualizarTopico(id,form);
@@ -71,6 +76,7 @@ public class TopicosController {
 
     @DeleteMapping("/{id}")
     @Transactional
+    @CacheEvict(value = "listaDeTopicos", allEntries = true)
     public ResponseEntity<?> remover(@PathVariable Long id){
 
         Boolean flagDeletou = topicosService.deleteById(id);
