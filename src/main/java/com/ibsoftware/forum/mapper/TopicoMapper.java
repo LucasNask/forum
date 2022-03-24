@@ -23,7 +23,7 @@ public abstract class TopicoMapper {
 
     public abstract List<TopicoDto> listEntityToListDTO(List<Topico> source);
 
-    public abstract Page<TopicoDto> pageEntityToPageDTO(Page<Topico> source);
+    //public abstract Page<TopicoDto> pageEntityToPageDTO(Page<Topico> source);
 
     public abstract Topico formToEntity(TopicoForm source);
 
@@ -52,7 +52,7 @@ public abstract class TopicoMapper {
         return detalheDoTopicoDto;
     };
 
-    public Topico attFormToEntity(AtualizacaoTopicoForm source, Topico target){
+    public Topico updateFrom(AtualizacaoTopicoForm source, Topico target){
         target.setMensagem(source.getMensagem());
         target.setTitulo(source.getTitulo());
 

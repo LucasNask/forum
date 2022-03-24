@@ -10,9 +10,7 @@ import com.ibsoftware.forum.modelo.Topico;
 import com.ibsoftware.forum.repository.CursoRepository;
 import com.ibsoftware.forum.repository.TopicosRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -27,22 +25,22 @@ public class TopicosService {
     @Autowired
     private CursoRepository cursoRepository;
 
-    public Page<TopicoDto> listTopicos(int pagina, int qtd){
-
-        Pageable paginacao = PageRequest.of(pagina,qtd);
+    public Page<TopicoDto> listTopicos(Pageable paginacao){
 
         Page<Topico> topicos = topicosRepository.findAll(paginacao);
 
-        return TopicoMapper.INSTANCE.pageEntityToPageDTO(topicos);
+        List<TopicoDto> listTopicoDto = TopicoMapper.INSTANCE.listEntityToListDTO(topicos.getContent());
+
+        return new PageImpl<>(listTopicoDto, paginacao, topicos.getTotalElements());
     }
 
-    public Page<TopicoDto> listTopicosByCurso(String nomeCurso,int pagina, int qtd){
-
-        Pageable paginacao = PageRequest.of(pagina,qtd);
+    public Page<TopicoDto> listTopicosByCurso(String nomeCurso, Pageable paginacao){
 
         Page<Topico> topicos = topicosRepository.findByCurso_Nome(nomeCurso,paginacao);
 
-        return TopicoMapper.INSTANCE.pageEntityToPageDTO(topicos);
+        List<TopicoDto> listTopicoDto = TopicoMapper.INSTANCE.listEntityToListDTO(topicos.getContent());
+
+        return new PageImpl<>(listTopicoDto, paginacao, topicos.getTotalElements());
     }
 
     public TopicoDto saveTopico(TopicoForm topicoForm){
@@ -76,7 +74,7 @@ public class TopicosService {
         //System.out.println(topico.getMensagem());
 
         if(topico.isPresent()){
-            TopicoMapper.INSTANCE.attFormToEntity(formAtt,topico.get());
+            TopicoMapper.INSTANCE.updateFrom(formAtt,topico.get());
             return TopicoMapper.INSTANCE.entityToDTO(topico.get());
         }
         return null;
