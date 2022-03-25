@@ -5,6 +5,8 @@ import com.ibsoftware.forum.form.AtualizacaoTopicoForm;
 import com.ibsoftware.forum.form.TopicoForm;
 import com.ibsoftware.forum.dto.DetalheDoTopicoDto;
 import com.ibsoftware.forum.dto.TopicoDto;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
@@ -43,6 +45,7 @@ public class TopicosController {
     @PostMapping
     @Transactional
     @CacheEvict(value = "listaDeTopicos", allEntries = true)
+    @Operation(security = { @SecurityRequirement(name = "bearer-key") })
     public ResponseEntity<TopicoDto> cadastrar(@RequestBody @Valid TopicoForm topicoForm, UriComponentsBuilder uriComponentsBuilder){
         TopicoDto topicoDto = topicosService.saveTopico(topicoForm);
 
@@ -64,6 +67,7 @@ public class TopicosController {
     @PutMapping("/{id}")
     @Transactional
     @CacheEvict(value = "listaDeTopicos", allEntries = true)
+    @Operation(security = { @SecurityRequirement(name = "bearer-key") })
     public ResponseEntity<TopicoDto> atualizar(@PathVariable Long id, @RequestBody @Valid AtualizacaoTopicoForm form){
 
         TopicoDto topicoDto = topicosService.atualizarTopico(id,form);
@@ -77,6 +81,7 @@ public class TopicosController {
     @DeleteMapping("/{id}")
     @Transactional
     @CacheEvict(value = "listaDeTopicos", allEntries = true)
+    @Operation(security = { @SecurityRequirement(name = "bearer-key") })
     public ResponseEntity<?> remover(@PathVariable Long id){
 
         Boolean flagDeletou = topicosService.deleteById(id);
