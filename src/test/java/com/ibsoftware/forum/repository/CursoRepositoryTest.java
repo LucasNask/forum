@@ -15,9 +15,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-@TestPropertySource(locations = "classpath:application-test.properties")
 @ActiveProfiles("test")
-@EnableConfigurationProperties
 public class CursoRepositoryTest {
 
     @Autowired
@@ -30,10 +28,10 @@ public class CursoRepositoryTest {
     public void deveriaCarregarUmCursoAoBuscarSeuNome(){
         String nomeCurso = "HTML 5";
 
-//        Curso html5 = new Curso();
-//        html5.setNome(nomeCurso);
-//        html5.setCategoria("Programacao");
-//        em.persist(html5);
+        Curso html5 = new Curso();
+        html5.setNome(nomeCurso);
+        html5.setCategoria("Programacao");
+        em.persist(html5);
 
         Curso curso = repository.findByNome(nomeCurso);
 
