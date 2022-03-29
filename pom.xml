@@ -13,6 +13,9 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<name>forum</name>
 	<description>Demo project for Spring Boot</description>
+	<!-- Caso queira gerar um WAR ao inves do Jar descomentar a linha de baixo -->
+	<!-- <packaging>war</packaging> -->
+	<!-- Caso queira gerar um WAR ao inves do Jar descomentar a linha de acima -->
 	<properties>
 		<java.version>11</java.version>
 	</properties>
@@ -65,6 +68,14 @@
 			<artifactId>h2</artifactId>
 		</dependency>
 
+		<!-- Caso queira gerar um WAR ao inves do Jar descomentar a dependencia de baixo -->
+		<!--<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-tomcat</artifactId>
+			<scope>provided</scope>
+		</dependency> -->
+		<!-- Caso queira gerar um WAR ao inves do Jar descomentar a dependencia de cima -->
+
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
@@ -94,6 +105,7 @@
 	</dependencies>
 
 	<build>
+		<finalName>forum</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
